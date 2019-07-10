@@ -1,0 +1,60 @@
+.app-home{
+  .item{
+    padding-top: 10px;
+    bottom: 10px;
+    margin-bottom: 10px;
+  }
+
+  button{
+    -webkit-appearance: none;
+    padding: 15px;
+    border-radius: 5px;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 17px;
+    border: none;
+    margin: 0 5px;
+    text-align: center;
+    background: #008BB8;
+
+    width: 100%;
+
+    margin: 0 auto;
+
+    -webkit-transition: all 0.5s;
+
+    &:hover{
+      background: #006f93;
+      cursor: pointer;
+    }
+    &:focus{
+      outline: 0;
+    }
+
+    &.success{
+      background: #27ae60;
+
+      &:hover{
+        background: #239c56;
+      }
+    }
+    &.error{
+      background: #c0392b;
+
+      &:hover{
+        background: #ac3326;
+      }
+    }
+  }
+}
+
+:host /deep/ .app-home{
+  button{
+    i{
+      margin-left: 5px;
+    }
+  }
+}
