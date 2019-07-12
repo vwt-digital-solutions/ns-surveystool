@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i");
+
+@import "~bootstrap/dist/css/bootstrap.css";
+
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-material.css";
+
+$fa-font-path: "/assets/fonts/font-awesome";
+@import "/assets/fontawesome/scss/fontawesome.scss";
+@import "/assets/fontawesome/scss/solid.scss";
+@import "/assets/fontawesome/scss/brands.scss";
+$primary-color: #2196F3;
+$accent-color: #FFD740;
+$background-color-vwt: #008BB8;
+
+
+body{
+  margin: 0;
+
+  font-family: 'Poppins', sans-serif;
+  text-transform: uppercase;
+}
+
+h1{
+  font-size: 25px;
+  margin: 0;
+  font-weight: 700;
+  color: #008BB8;
+  margin-bottom: 10px;
+}
+
+h2{
+  font-size: 15px;
+  margin: 0;
+  font-weight: 600;
+  color: #008BB8;
+  margin-bottom: 5px;
+}
+
+.container{
+  padding-top: 70px;
+
+  .search_field {
+    display: flex;
+  }
+  .ag-theme-material .ag-cell {
+    cursor: pointer;
+
+    &.ag-cell-focus:not(.ag-cell-range-selected) {
+      border: transparent;
+    }
+  }
+  .ag-theme-material .ag-row {
+    &.ag-row-selected{
+      background-color: #b6eeb8;
+    }
+  }
+}
+
+button#surveys_button, #registrationButton {
+  color: #ffffff;
+  background: $background-color-vwt;
+  width: 100%;
+}

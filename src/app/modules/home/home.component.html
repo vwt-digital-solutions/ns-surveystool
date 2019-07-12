@@ -1,0 +1,81 @@
+<div class="container">
+  <h1>Download survey results</h1>
+  <div class="row network search_field">
+    <ng-template #surveyInputSearch let-r="result" let-t="term">
+      <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+    </ng-template>
+
+    <div class="col-12 col-md-9 item"
+         (click)="getSelectedSurvey(model)"
+         (focus)="getSelectedSurvey(model)">
+      <input
+        id="typeahead-focus"
+        type="text"
+        class="form-control"
+        [(ngModel)]="model"
+        [ngbTypeahead]="search"
+        (ngModelChange)="isClicked(model)"
+        (click)="getSelectedSurvey(model)"
+        (focus)="focus$.next($event.target.value)"
+        [inputFormatter]="formatter"
+        [resultTemplate]="surveyInputSearch"
+        #instance="ngbTypeahead"
+      />
+    </div>
+
+    <div class="col-12 col-md-3 item">
+      <button type="button" id="surveys_button" class="btn btn-outline-primary" (click)="searchSurveyButton()"
+              [attr.aria-expanded]="!showDownloadView" aria-controls="collapseSurvey">
+        Show Downloads
+      </button>
+    </div>
+  </div>
+  <div id="collapseSurvey" [ngbCollapse]="showDownloadView">
+    <div class="row app-home">
+      <div class="col-12">
+        <hr>
+      </div>
+
+      <div class="col-12 col-md-6 item" >
+        <button
+          [ngClass]="[buttonCsvClass]"
+          (click)="getSurveysCsv(registrations.id)"
+          title="Download CSV"
+          [innerHTML]="buttonCsvInner" ></button>
+      </div>
+
+      <div class="col-12 col-md-6 item">
+        <button
+          [ngClass]="[buttonZipClass]"
+          (click)="getSurveysZip(registrations.id)"
+          title="Download ZIP"
+          [innerHTML]="buttonZipInner" ></button>
+      </div>
+
+      <div class="col-12 col-md-12"><H5>
+        Images: <code [innerHTML]="surveyName()"></code></H5>
+      </div>
+      <p>
+          <ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null">
+            {{ successMessage }}
+          </ngb-alert>
+      </p>
+      <ag-grid-angular
+        style="width: 100%; height: 750px; overflow:hidden;"
+        id="myGrid"
+        class="ag-theme-material"
+        [columnDefs]="columnDefs"
+        [rowData]="rowData"
+        [defaultColDef]="defaultColDef"
+        [enableRangeSelection]="true"
+        (gridReady)="onGridReady($event)"
+        [getRowNodeId]="getRowNodeId"
+        [rowSelection]="rowSelection"
+        [animateRows]="true"
+        [context]="context"
+        [frameworkComponents]="frameworkComponents"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
+</div>
