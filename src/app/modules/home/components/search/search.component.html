@@ -2,7 +2,9 @@
   <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
 </ng-template>
 
-<div [hidden]="lookupLoaded" class="col-12 progress"><i class="fas fa-sync-alt fa-spin"></i></div>
+<div [hidden]="lookupLoaded" class="col-12">
+  <div class="col-offset-5 col-2 progress"><i class="fas fa-sync-alt fa-spin"></i></div>
+</div>
 
 <div class="col-12 col-md-9 item"
      (click)="handler.getSelectedSurvey(handler.model)"

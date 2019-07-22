@@ -30,7 +30,7 @@ export class DownloadButtonComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.stopProgress('', true);
+    this.buttonInner = this.buttonTitle + `&nbsp;<i class="fas fa-file-${this.kind}"></i>&nbsp;<i class="fas fa-save"></i>`;
 
     this.status$.subscribe((message: string) => this.statusMessage = message );
     this.status$.pipe(debounceTime(5000)).subscribe(() => this.statusMessage = '' );
@@ -44,8 +44,9 @@ export class DownloadButtonComponent implements OnInit {
   }
 
   public stopProgress(message: string, success: boolean) {
-    this.buttonInner = this.buttonTitle + `&nbsp;<i class="fas fa-file-${this.kind}"></i>`;
-    this.statusClass = success ? 'success' : 'failuer';
+    this.buttonInner = this.buttonTitle + `&nbsp;<i class="fas fa-file-${this.kind}"></i>&nbsp;`
+     + (success ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>');
+    this.statusClass = success ? 'success' : 'failure';
     this.finalStatusSet(message);
   }
 

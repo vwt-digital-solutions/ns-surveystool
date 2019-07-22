@@ -147,6 +147,11 @@ export class HomeComponent implements OnInit {
         this.clearData() : undefined;
   }
 
+  downloadSurvey(ctx, callback) {
+    // this.isClicked(this.model);
+    this.getSurveysImagesZip(this.registrations.id, ctx.serialNumber, callback);
+  }
+
   downloadNoImages() {
     // TODO Needs rework on disabling the button
     return true;
@@ -220,31 +225,33 @@ export class HomeComponent implements OnInit {
       );
   }
 
-  getSurveysImagesZip(surveyId: string, registrationId: number) {
+  getSurveysImagesZip(surveyId: string, registrationId: number, callback) {
     const that = this;
     // @ts-ignore
-    for (let index = 0; index < 10; index++) {
-      this.registrations.detail.filter(registration => {
-        return registration.survey_id === surveyId && registration.has_images ?
-          this.httpClient.get<Nonce>(
-            this.env.apiUrl +
-            `/surveys/${surveyId}/registrations/${registrationId}/images/archives`).subscribe(
-              nonce => {
-                this.changeSuccessMessage(registrationId);
-                try {
-                  that.changeSuccessMessage(registrationId);
-                  const hiddenElement = document.createElement('a');
-                  hiddenElement.href = that.env.apiUrl + `/surveys/${nonce.nonce}`;
-                  hiddenElement.target = '_blank';
-                  hiddenElement.click();
-                } catch {
-                }
-              },
-              reason => {
-                return throwError(reason);
+    this.registrations.detail.filter(registration => {
+      return registration.survey_id === surveyId && registration.has_images ?
+        this.httpClient.get<Nonce>(
+          this.env.apiUrl +
+          `/surveys/${surveyId}/registrations/${registrationId}/images/archives`).subscribe(
+            nonce => {
+              let success = true;
+              try {
+                that.changeSuccessMessage(registrationId);
+                const hiddenElement = document.createElement('a');
+                hiddenElement.href = that.env.apiUrl + `/surveys/${nonce.nonce}`;
+                hiddenElement.target = '_blank';
+                hiddenElement.click();
+              } catch {
+                success = false;
+              } finally {
+                callback.stopProgress(success);
               }
-            ) : this.downloadNoImages();
-      });
-      }
+            },
+            reason => {
+              callback.stopProgress(false);
+              return throwError(reason);
+            }
+          ) : this.downloadNoImages();
+    });
   }
 }
