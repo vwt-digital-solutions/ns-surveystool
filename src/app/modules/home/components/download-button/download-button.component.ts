@@ -33,7 +33,7 @@ export class DownloadButtonComponent implements OnInit {
     this.stopProgress('', true);
 
     this.status$.subscribe((message: string) => this.statusMessage = message );
-    this.status$.pipe(debounceTime(5000)).subscribe(() => this.statusMessage = null );
+    this.status$.pipe(debounceTime(5000)).subscribe(() => this.statusMessage = '' );
   }
 
   @HostListener('click')

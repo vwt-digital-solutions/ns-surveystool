@@ -149,7 +149,7 @@ describe('NS Survey Download Tool', () => {
       });
   });
 
-  it('it should show registrations list after selection of survey', () => {
+  xit('it should show registrations list after selection of survey', () => {
     browser.get('/').then((value: any) => {
       expect(element(by.tagName('ag-grid-angular')).isPresent()).toBeTruthy();
       expect(element(by.tagName('ag-grid-angular')).isDisplayed()).toBeFalsy();
