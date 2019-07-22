@@ -2,7 +2,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 import { AuthGuard } from './auth/auth.guard';
-import { HomeComponent } from './modules/home/home.component';
+import { HomeComponent } from './modules/home/components/home/home.component';
 import { AuthComponent } from './auth/auth.component';
 
 import { Role } from './models/role.enum';

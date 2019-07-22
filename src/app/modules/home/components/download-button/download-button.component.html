@@ -1,0 +1,10 @@
+<div>
+<button
+  [ngClass]="[buttonClass]"
+  [title]="title"
+  [innerHTML]="buttonInner"></button>
+  <div
+    id="status"
+    [class]="[statusClass]"
+    [hidden]="statusMessage == '' ? 'true' : ''">{{ statusMessage }}</div>
+</div>
