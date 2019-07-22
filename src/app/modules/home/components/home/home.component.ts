@@ -147,13 +147,6 @@ export class HomeComponent implements OnInit {
         this.clearData() : undefined;
   }
 
-  // downloadSurvey(ctx) {
-  //   this.downloadCSV.stopProgress('', true);
-  //   this.downloadZIP.stopProgress('', true);
-  //   this.isClicked(this.model);
-  //   this.getSurveysImagesZip(this.registrations.id, ctx.serialNumber);
-  // }
-
   downloadNoImages() {
     // TODO Needs rework on disabling the button
     return true;

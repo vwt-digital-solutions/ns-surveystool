@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { HomeComponent } from '../home/home.component';
 import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 export interface ProgressAwareButton {
   startProgress(message: string);
@@ -24,12 +25,15 @@ export class DownloadButtonComponent implements OnInit {
   public statusMessage = '';
   public statusClass = '';
 
-  private progress$ = new Subject<string>();
+  private status$ = new Subject<string>();
 
   constructor() { }
 
   ngOnInit() {
     this.stopProgress('', true);
+
+    this.status$.subscribe((message: string) => this.statusMessage = message );
+    this.status$.pipe(debounceTime(5000)).subscribe(() => this.statusMessage = null );
   }
 
   @HostListener('click')
@@ -41,12 +45,11 @@ export class DownloadButtonComponent implements OnInit {
 
   public stopProgress(message: string, success: boolean) {
     this.buttonInner = this.buttonTitle + `&nbsp;<i class="fas fa-file-${this.kind}"></i>`;
-    this.statusMessage = message;
     this.statusClass = success ? 'success' : 'failuer';
-    setTimeout(() => { this.statusMessage = ''; }, 5000);
+    this.finalStatusSet(message);
   }
 
-  private progressSet(message: string) {
-    this.progress$
+  private finalStatusSet(message: string) {
+    this.status$.next(message);
   }
 }

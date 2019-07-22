@@ -5,16 +5,16 @@
 <div [hidden]="lookupLoaded" class="col-12 progress"><i class="fas fa-sync-alt fa-spin"></i></div>
 
 <div class="col-12 col-md-9 item"
-     (click)="handler.getSelectedSurvey(model)"
-     (focus)="handler.getSelectedSurvey(model)">
+     (click)="handler.getSelectedSurvey(handler.model)"
+     (focus)="handler.getSelectedSurvey(handler.model)">
   <input
     id="typeahead-focus"
     type="text"
     class="form-control"
     [(ngModel)]="handler.model"
     [ngbTypeahead]="search"
-    (ngModelChange)="handler.isClicked(model)"
-    (click)="handler.getSelectedSurvey(model)"
+    (ngModelChange)="handler.isClicked(handler.model)"
+    (click)="handler.getSelectedSurvey(handler.model)"
     (focus)="focus$.next($event.target.value)"
     [inputFormatter]="formatter"
     [resultTemplate]="surveyInputSearch"
