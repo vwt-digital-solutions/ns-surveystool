@@ -33,7 +33,7 @@ export class AuthGuard implements CanActivate {
 
     console.log('Checking necessary roles');
     const claims = this.oauthService.getIdentityClaims() as IClaimRoles;
-    if (route.data.roles && claims._roles) {
+    if (route.data.roles && claims && claims._roles) {
       // let isAuthorisedRoute = false;
       for (const role of claims._roles) {
         if (route.data.roles.indexOf(role) > -1) {
@@ -50,6 +50,6 @@ export class AuthGuard implements CanActivate {
       // }
     }
     console.log('No role requested');
-    return true;
+    return claims !== undefined;
   }
 }
