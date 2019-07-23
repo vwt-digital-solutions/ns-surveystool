@@ -1,0 +1,20 @@
+<!-- <div [hidden]="lookupLoaded" class="col-12">
+  <div class="col-offset-5 col-2 progress"><i class="fas fa-sync-alt fa-spin"></i></div>
+</div> -->
+
+<div class="col-12 col-md-9 item">
+<ngx-select [(ngModel)]="model"
+            [allowClear]="true"
+            [items]="items"
+            placeholder="No survey selected"
+            (select)="doSelect($event)">
+</ngx-select>
+</div>
+
+<div class="col-12 col-md-3 item">
+  <button type="button" id="surveys_button" class="btn btn-outline-primary" (click)="searchSurveyButton()"
+          [attr.aria-expanded]="!handler.showDownloadView" aria-controls="collapseSurvey"
+          [attr.disabled]="lookupLoaded && model ? null : ''">
+    Show Downloads
+  </button>
+</div>
