@@ -14,12 +14,16 @@ import { AppComponent } from './app.component';
 import { EnvServiceProvider } from './services/env.service.provider';
 import { HomeModule } from './modules/home/home.module';
 import { HeaderComponent } from './components/header/header.component';
+import { LoaderComponent } from './components/loader/loader.component';
+import { LoaderService } from './services/loader.service';
+import { LoaderInterceptor } from './services/loader.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    AuthComponent
+    AuthComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +43,12 @@ import { HeaderComponent } from './components/header/header.component';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
+      multi: true
+    },
+    LoaderService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
       multi: true
     }
   ],

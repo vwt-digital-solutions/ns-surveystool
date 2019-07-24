@@ -1,5 +1,4 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, merge } from 'rxjs';
 
 import { RegistrationDownloadButtonComponent } from '../utils/registration-download-button.component';
@@ -9,31 +8,9 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
 import { EnvService } from 'src/app/services/env.service';
 import { throwError } from 'rxjs';
 
-import { saveAs } from 'file-saver';
 import { ProgressAwareButton } from '../download-button/download-button.component';
-
-/**
- * Saves a file by opening file-save-as dialog in the browser
- * using file-save library.
- * @param blobContent file content as a Blob
- * @param fileName name file should be saved as
- */
-export const saveFile = (blobContent: Blob, fileName: string) => {
-  const blob = new Blob([blobContent], { type: 'application/octet-stream' });
-  saveAs(blob, fileName);
-};
-
-export const getFileNameFromResponseContentDisposition = (res: Response) => {
-  const contentDisposition = res.headers.get('content-disposition') || '';
-  const matches = /filename=([^;]+)/ig.exec(contentDisposition);
-  const fileName = (matches[1] || 'untitled').trim();
-  return fileName;
-};
-
-interface Nonce {
-  nonce: string;
-  mime_type?: string;
-}
+import { SurveysService } from '../../services/surveys.service';
+import { Nonce } from '../../../../models/nonce';
 
 @Component({
   selector: 'app-home',
@@ -68,8 +45,7 @@ export class HomeComponent implements OnInit {
   public gridColumnApi;
 
   constructor(
-    private httpClient: HttpClient,
-    private env: EnvService,
+    private surveys: SurveysService
   ) {
     this.columnDefs = [
       { headerName: 'Download', field: 'download', sortable: true, filter: true, cellRenderer: 'childMessageRenderer', width: 180 },
@@ -92,7 +68,7 @@ export class HomeComponent implements OnInit {
     };
   }
 
-  surveyName = () => !this.model ? '<i class=\'fas fa-sync-alt fa-spin\'></i>' : this.model.name;
+  surveyName = () => this.model && this.model.name ? this.model.name : '<i class=\'fas fa-sync-alt fa-spin\'></i>';
 
   createRowData() {
     const api = this.gridApi;
@@ -141,8 +117,8 @@ export class HomeComponent implements OnInit {
 
   public isClicked: (model) => void = model => {
     this.getSelectedSurvey(model);
-    model && !!model.survey_id ?
-      this.getSurveyRegistrations(model.survey_id) : model && model.length === 0 ?
+    this.model && !!this.model.survey_id ?
+      this.getSurveyRegistrations(this.model.survey_id) : model && model.length === 0 ?
         // tslint:disable-next-line: no-unused-expression
         this.clearData() : undefined;
   }
@@ -176,8 +152,7 @@ export class HomeComponent implements OnInit {
 
   public getSurveyRegistrations(surveyId: string) {
     const { regIds } = this.registrations;
-    this.httpClient.get(
-      this.env.apiUrl + `/surveys/${surveyId}/registrations`).subscribe(
+    this.surveys.getSurveyRegistrations(surveyId).subscribe(
         result => {
           const folders = Object.values(result).flat(1);
           // tslint:disable-next-line: no-unused-expressio
@@ -190,13 +165,10 @@ export class HomeComponent implements OnInit {
   public getSurveysCsv(surveyId: string) {
     const that = this;
 
-    this.httpClient.get<Nonce>(this.env.apiUrl + `/surveys/${surveyId}/registrations/csvfiles`)
+    this.surveys.getSurveysCsv(surveyId)
       .subscribe(nonce => {
         this.downloadCSV.stopProgress('Data ready, download started', true);
-        const hiddenElement = document.createElement('a');
-        hiddenElement.href = that.env.apiUrl + `/surveys/${nonce.nonce}`;
-        hiddenElement.target = '_blank';
-        hiddenElement.click();
+        this.surveys.triggerDownload(nonce);
       },
         reason => {
           console.log(JSON.stringify(reason));
@@ -208,15 +180,11 @@ export class HomeComponent implements OnInit {
   public getSurveysZip(surveyId: string) {
     const that = this;
 
-    this.httpClient.get<Nonce>(
-      this.env.apiUrl + `/surveys/${surveyId}/registrations/archives`)
+    this.surveys.getSurveysZip(surveyId)
       .subscribe(
         nonce => {
           this.downloadZIP.stopProgress('Data ready, download started', true);
-          const hiddenElement = document.createElement('a');
-          hiddenElement.href = that.env.apiUrl + `/surveys/${nonce.nonce}`;
-          hiddenElement.target = '_blank';
-          hiddenElement.click();
+          this.surveys.triggerDownload(nonce);
         },
         reason => {
           this.downloadZIP.stopProgress('Error preparing data, please contact support', false);
@@ -230,17 +198,12 @@ export class HomeComponent implements OnInit {
     // @ts-ignore
     this.registrations.detail.filter(registration => {
       return registration.survey_id === surveyId && registration.has_images ?
-        this.httpClient.get<Nonce>(
-          this.env.apiUrl +
-          `/surveys/${surveyId}/registrations/${registrationId}/images/archives`).subscribe(
+        this.surveys.getSurveysImagesZip(surveyId, registrationId).subscribe(
             nonce => {
               let success = true;
               try {
                 that.changeSuccessMessage(registrationId);
-                const hiddenElement = document.createElement('a');
-                hiddenElement.href = that.env.apiUrl + `/surveys/${nonce.nonce}`;
-                hiddenElement.target = '_blank';
-                hiddenElement.click();
+                this.surveys.triggerDownload(nonce);
               } catch {
                 success = false;
               } finally {
