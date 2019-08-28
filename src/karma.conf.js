@@ -30,10 +30,10 @@ module.exports = function (config) {
     customLaunchers: {
         Chrome_no_sandbox: {
             base: 'Chrome',
-        //    flags: ['--no-sandbox','--headless','--hide-scrollbars', '--disable-gpu','--remote-debugging-port=9876']
+            flags: ['--no-sandbox','--headless','--hide-scrollbars', '--disable-gpu','--remote-debugging-port=9876']
         }
     },
-    singleRun: false,
-    restartOnFileChange: true
+    singleRun: true,
+    restartOnFileChange: false
   });
 };
