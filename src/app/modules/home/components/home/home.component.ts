@@ -158,8 +158,8 @@ export class HomeComponent implements OnInit {
           // tslint:disable-next-line: no-unused-expressio
           this.model.survey_id ? (regIds.splice(0, regIds.length),
             regIds.push(...folders.map(regs => regs))) : console.warn('>> Refreshing >>');
+          this.createRowData();
         });
-    setTimeout(() => { this.createRowData(); }, 1000);
   }
 
   public getSurveysCsv(surveyId: string) {
