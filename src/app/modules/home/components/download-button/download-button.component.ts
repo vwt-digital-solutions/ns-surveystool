@@ -27,8 +27,6 @@ export class DownloadButtonComponent implements OnInit {
 
   private status$ = new Subject<string>();
 
-  constructor() { }
-
   ngOnInit() {
     this.buttonInner = this.buttonTitle + `&nbsp;<i class="fas fa-file-${this.kind}"></i>&nbsp;<i class="fas fa-save"></i>`;
 

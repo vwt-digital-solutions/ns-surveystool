@@ -34,7 +34,7 @@ export class SearchComponent implements OnInit {
 
   public getFolderContents( ) {
     const { detail } = this.handler.registrations;
-    const that = this;
+    const that = this; // eslint-disable-line @typescript-eslint/no-this-alias
     this.httpClient.get(
       this.env.apiUrl + `/surveys`
     ).subscribe(
