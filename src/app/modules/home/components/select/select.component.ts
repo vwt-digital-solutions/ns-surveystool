@@ -27,7 +27,7 @@ export class SelectComponent implements OnInit {
 
   public getFolderContents( ) {
     const { detail } = this.handler.registrations;
-    const that = this;
+    const that = this; // eslint-disable-line @typescript-eslint/no-this-alias
     this.httpClient.get(
       this.env.apiUrl + `/surveys`
     ).subscribe(
@@ -50,7 +50,6 @@ export class SelectComponent implements OnInit {
 
   searchSurveyButton() {
     this.handler.clearData();
-    const that = this;
     // let new_survey = this.handler.registrations.detail.find(det => det.name === that.model );
     this.handler.showDownloadView = false; // Show the drop Down
     // this.handler.getSelectedSurvey(this.model);

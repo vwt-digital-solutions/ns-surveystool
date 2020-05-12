@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { OAuthService } from 'angular-oauth2-oidc';
 
-interface IClaimsEmail {
+interface ClaimsEmail {
   email: any;
 }
 
@@ -23,7 +23,7 @@ export class HeaderComponent {
   }
 
   get email() {
-    const claims = this.oauthService.getIdentityClaims() as IClaimsEmail;
+    const claims = this.oauthService.getIdentityClaims() as ClaimsEmail;
     if (!claims) {
       return null;
     }

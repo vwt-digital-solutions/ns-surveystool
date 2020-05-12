@@ -1,6 +1,6 @@
 import { browser, protractor, by, element, Capabilities, Key } from 'protractor';
-const request = require('request');
-const fs = require('fs');
+const request = require('request'); // eslint-disable-line
+const fs = require('fs'); // eslint-disable-line
 // const downloadsFolder = require('downloads-folder');
 
 const hasClass = (elt, cls) => {
@@ -42,12 +42,14 @@ describe('NS Survey Download Tool', () => {
       headers: {
         'content-type': 'application/x-www-form-urlencoded'
       },
+      /* eslint-disable */
       form: {
         grant_type: 'client_credentials',
         client_id: browser.params.login.clientId,
         client_secret: browser.params.login.clientSecret,
         scope: browser.params.login.scope
       }
+      /* eslint-enable */
     };
 
     const get = (options: any): any => {

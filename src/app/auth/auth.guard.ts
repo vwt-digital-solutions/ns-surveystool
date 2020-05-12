@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate, Router } from
 
 import { OAuthService } from 'angular-oauth2-oidc';
 
-interface IClaimRoles {
+interface ClaimsRoles {
   _roles: any;
 }
 
@@ -32,7 +32,7 @@ export class AuthGuard implements CanActivate {
       });
 
     console.log('Checking necessary roles');
-    const claims = this.oauthService.getIdentityClaims() as IClaimRoles;
+    const claims = this.oauthService.getIdentityClaims() as ClaimsRoles;
     if (route.data.roles && claims && claims._roles) {
       // let isAuthorisedRoute = false;
       for (const role of claims._roles) {

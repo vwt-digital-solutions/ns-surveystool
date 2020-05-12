@@ -163,8 +163,6 @@ export class HomeComponent implements OnInit {
   }
 
   public getSurveysCsv(surveyId: string) {
-    const that = this;
-
     this.surveys.getSurveysCsv(surveyId)
       .subscribe(nonce => {
         this.downloadCSV.stopProgress('Data ready, download started', true);
@@ -178,8 +176,6 @@ export class HomeComponent implements OnInit {
   }
 
   public getSurveysZip(surveyId: string) {
-    const that = this;
-
     this.surveys.getSurveysZip(surveyId)
       .subscribe(
         nonce => {
@@ -194,7 +190,7 @@ export class HomeComponent implements OnInit {
   }
 
   getSurveysImagesZip(surveyId: string, registrationId: number, callback) {
-    const that = this;
+    const that = this; // eslint-disable-line @typescript-eslint/no-this-alias
     // @ts-ignore
     this.registrations.detail.filter(registration => {
       return registration.survey_id === surveyId && registration.has_images ?
